@@ -1,0 +1,2010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Srayudu Nextgen Technologies Pvt Ltd</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* ── DARK THEME (default) ── */
+    --gold: #C9A227;
+    --gold-light: #E8C84A;
+    --gold-pale: #F5E4A0;
+    --gold-dark: #8B6914;
+    --black: #050505;
+    --black-2: #0A0A0A;
+    --black-3: #111111;
+    --black-4: #1A1A1A;
+    --text-muted: #888;
+    --text-dim: #555;
+    --text-main: #fff;
+    --bg-main: var(--black);
+    --accent: var(--gold);
+    --accent-light: var(--gold-light);
+    --accent-dark: var(--gold-dark);
+    --accent-rgb: 201,162,39;
+    --glint-rgb: 232,200,74;
+    /* liquid glass tokens */
+    --glass-fill: rgba(255,255,255,0.045);
+    --glass-fill-hover: rgba(255,255,255,0.075);
+    --glass-border: rgba(var(--accent-rgb),0.22);
+    --glass-shadow: 0 10px 36px rgba(0,0,0,0.55);
+    --glass-rim: rgba(var(--accent-rgb),0.16);
+    --glass-sheen: rgba(255,255,255,0.06);
+    --particle-color: 201,162,39;
+    --nav-bg: rgba(5,5,5,0.55);
+    --section-divider: rgba(var(--accent-rgb),0.1);
+    --card-num-color: rgba(var(--accent-rgb),0.06);
+    --card-num-hover: rgba(var(--accent-rgb),0.12);
+    --tint-overlay: rgba(0,0,0,0.7);
+    --portfolio-bg-color: rgba(var(--accent-rgb),0.05);
+    --portfolio-bg-hover: rgba(var(--accent-rgb),0.09);
+    --process-dot-bg: rgba(5,5,5,0.6);
+    --transition-theme: 0.4s ease;
+  }
+
+  /* ── LIGHT THEME ── */
+  html[data-theme="light"] {
+    --gold: #1B2A4A;
+    --gold-light: #2C4470;
+    --gold-pale: #C7D2E8;
+    --gold-dark: #0E1830;
+    --black: #F6F7FA;
+    --black-2: #FFFFFF;
+    --black-3: #F0F2F6;
+    --black-4: #E7EAF1;
+    --text-muted: #5B6273;
+    --text-dim: #8A90A0;
+    --text-main: #15192A;
+    --bg-main: var(--black);
+    --accent: var(--gold);
+    --accent-light: var(--gold-light);
+    --accent-dark: var(--gold-dark);
+    --accent-rgb: 27,42,74;
+    --glint-rgb: 44,68,112;
+    --glass-fill: rgba(255,255,255,0.55);
+    --glass-fill-hover: rgba(255,255,255,0.78);
+    --glass-border: rgba(27,42,74,0.14);
+    --glass-shadow: 0 10px 30px rgba(20,30,60,0.10);
+    --glass-rim: rgba(27,42,74,0.10);
+    --glass-sheen: rgba(255,255,255,0.5);
+    --particle-color: 27,42,74;
+    --nav-bg: rgba(255,255,255,0.65);
+    --section-divider: rgba(27,42,74,0.08);
+    --card-num-color: rgba(27,42,74,0.05);
+    --card-num-hover: rgba(27,42,74,0.10);
+    --tint-overlay: rgba(255,255,255,0.85);
+    --portfolio-bg-color: rgba(27,42,74,0.04);
+    --portfolio-bg-hover: rgba(27,42,74,0.07);
+    --process-dot-bg: rgba(255,255,255,0.7);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+    transition: background var(--transition-theme), color var(--transition-theme);
+  }
+
+  /* ─── CUSTOM CURSOR ─── */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(var(--accent-rgb),0.5);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.18s ease, border-color 0.2s ease;
+  }
+
+  /* ─── AURA CANVAS ─── */
+  #aura-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── LIQUID GLASS PANEL ───
+     Real iOS26-style glass: backdrop blur+saturate stacked with an SVG
+     feDisplacementMap (#liquid-distort) that refracts/bends whatever sits
+     behind the panel — the aura canvas glow, gold particles, page content
+     scrolling underneath. A specular sheen + cursor-tracking glint pseudo-
+     layer sits on top, and a bright bevel rim catches light along the
+     top-left edge, the way a real curved glass edge would. */
+  .glass {
+    position: relative;
+    background: var(--glass-fill);
+    backdrop-filter: blur(20px) saturate(160%) url(#liquid-distort);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      var(--glass-shadow),
+      inset 0 1px 1px rgba(255,255,255,0.10),
+      inset 0 -14px 20px -14px rgba(var(--accent-rgb),0.08),
+      inset 0 0 0 1px rgba(255,255,255,0.02);
+    isolation: isolate;
+    transition: background 0.35s ease, border-color 0.35s ease;
+  }
+  .glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+      radial-gradient(circle 160px at var(--mx, 50%) var(--my, 0%), rgba(var(--glint-rgb),0.16), transparent 70%),
+      linear-gradient(120deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 20%, transparent 35%);
+    mix-blend-mode: screen;
+    z-index: 1;
+    transition: background 0.05s linear;
+  }
+  .glass::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: inset 1.5px 1.5px 0 rgba(var(--accent-rgb),0.16);
+    z-index: 1;
+  }
+  .glass > * { position: relative; z-index: 2; }
+  .glass:hover { background: var(--glass-fill-hover); border-color: rgba(var(--accent-rgb),0.4); }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: var(--nav-bg);
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    border-bottom: 1px solid rgba(var(--accent-rgb),0.12);
+    box-shadow: 0 1px 0 var(--glass-sheen) inset, 0 12px 30px rgba(0,0,0,0.12);
+    transition: background var(--transition-theme), border-color var(--transition-theme);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .nav-logo img, .nav-logo svg {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 8px rgba(var(--accent-rgb),0.5));
+  }
+
+  .nav-brand {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    line-height: 1.2;
+  }
+  .nav-brand span {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    letter-spacing: 0.2em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-cta {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+    border: none;
+    border-radius: 999px;
+    padding: 0.6rem 1.6rem;
+    cursor: none;
+    transition: filter 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  }
+  .nav-cta:hover {
+    filter: brightness(1.08);
+    box-shadow: 0 0 24px rgba(var(--accent-rgb),0.4);
+    transform: translateY(-1px);
+  }
+
+  .theme-toggle {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-fill);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    display: flex; align-items: center; justify-content: center;
+    cursor: none;
+    margin-left: 0.9rem;
+    flex-shrink: 0;
+    color: var(--accent);
+    transition: background var(--transition-theme), border-color var(--transition-theme), transform 0.2s ease;
+    position: relative;
+  }
+  .theme-toggle:hover { transform: translateY(-1px) rotate(8deg); border-color: var(--accent); }
+  .theme-toggle svg { width: 17px; height: 17px; position: absolute; transition: opacity 0.3s ease, transform 0.4s ease; }
+  .theme-toggle .icon-sun { opacity: 0; transform: scale(0.5) rotate(-60deg); }
+  .theme-toggle .icon-moon { opacity: 1; transform: scale(1) rotate(0deg); }
+  html[data-theme="light"] .theme-toggle .icon-sun { opacity: 1; transform: scale(1) rotate(0deg); }
+  html[data-theme="light"] .theme-toggle .icon-moon { opacity: 0; transform: scale(0.5) rotate(60deg); }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    z-index: 1;
+    padding: 0 2rem;
+  }
+
+  .hero-logo-wrap {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    margin: 0 auto 2.5rem;
+    border-radius: 50%;
+  }
+
+  .hero-logo-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -30px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(var(--accent-rgb),0.15) 0%, transparent 70%);
+    animation: aura-pulse 3s ease-in-out infinite;
+  }
+  .hero-logo-wrap::after {
+    content: '';
+    position: absolute;
+    inset: -60px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(var(--accent-rgb),0.06) 0%, transparent 70%);
+    animation: aura-pulse 3s ease-in-out infinite 0.8s;
+  }
+
+  .hero-logo-glass {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    z-index: 1;
+  }
+
+  .hero-logo-wrap img, .hero-logo-wrap svg.logo-svg {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    filter: drop-shadow(0 0 30px rgba(var(--accent-rgb),0.6)) drop-shadow(0 0 60px rgba(var(--accent-rgb),0.3));
+    animation: logo-float 5s ease-in-out infinite;
+  }
+
+  /* orbiting rings around the hero emblem, liquid-glass signature */
+  .ring-orbit {
+    position: absolute;
+    top: 50%; left: 50%;
+    border: 1px solid rgba(var(--accent-rgb),0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: spin-slow linear infinite;
+    z-index: 1;
+  }
+  .ring-orbit.r1 { width: 110%; height: 110%; animation-duration: 16s; }
+  .ring-orbit.r2 { width: 130%; height: 130%; border-color: rgba(var(--accent-rgb),0.16); animation-duration: 24s; animation-direction: reverse; }
+  .ring-orbit .pip {
+    position: absolute; top: -3px; left: 50%;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold-light);
+    box-shadow: 0 0 10px var(--gold-light);
+  }
+  @keyframes spin-slow { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+  @keyframes aura-pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.08); }
+  }
+
+  @keyframes logo-float {
+    0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+    50% { transform: translate(-50%, -50%) translateY(-12px); }
+  }
+
+  .hero-eyebrow {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: fade-up 0.9s ease 0.4s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2.4rem, 6vw, 5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.04em;
+    opacity: 0;
+    animation: fade-up 0.9s ease 0.65s forwards;
+  }
+
+  .hero-title .gold { color: var(--gold); }
+  .hero-title .outline {
+    -webkit-text-stroke: 1px rgba(var(--accent-rgb),0.5);
+    color: transparent;
+  }
+
+  .hero-sub {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(0.85rem, 2vw, 1.05rem);
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fade-up 0.9s ease 0.85s forwards;
+  }
+
+  .hero-tagline {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    color: rgba(var(--accent-rgb),0.6);
+    text-transform: uppercase;
+    margin-bottom: 3.5rem;
+    opacity: 0;
+    animation: fade-up 0.9s ease 1.05s forwards;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 1.2rem;
+    justify-content: center;
+    opacity: 0;
+    animation: fade-up 0.9s ease 1.25s forwards;
+  }
+
+  .btn-primary {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+    border: none;
+    padding: 0.9rem 2.4rem;
+    text-decoration: none;
+    display: inline-block;
+    cursor: none;
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 30px rgba(var(--accent-rgb),0.5);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(var(--accent-rgb),0.4);
+    padding: 0.9rem 2.4rem;
+    text-decoration: none;
+    display: inline-block;
+    cursor: none;
+    transition: border-color 0.3s ease, background 0.3s ease, transform 0.2s ease;
+  }
+  .btn-secondary:hover {
+    border-color: var(--gold);
+    background: rgba(var(--accent-rgb),0.08);
+    transform: translateY(-2px);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fade-up 0.9s ease 1.6s forwards;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    animation: scroll-breathe 2s ease-in-out infinite;
+  }
+
+  .scroll-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  @keyframes scroll-breathe {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4rem;
+    gap: 1.5rem;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(var(--accent-rgb),0.3), transparent);
+  }
+  .divider-diamond {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    box-shadow: 0 0 10px rgba(var(--accent-rgb),0.6);
+  }
+
+  /* ─── STATS STRIP ─── */
+  .stats-strip {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem;
+    padding: 4rem 6rem;
+  }
+
+  .stat-item {
+    text-align: center;
+    padding: 1.8rem 1.5rem;
+    border-radius: 20px;
+  }
+
+  .stat-number {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .stat-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  /* ─── SECTION COMMON ─── */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 7rem 6rem;
+  }
+
+  .section-eyebrow {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.45em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    letter-spacing: 0.02em;
+  }
+
+  .section-desc {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+    max-width: 520px;
+  }
+
+  /* ─── ABOUT ─── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    margin-top: 4rem;
+  }
+
+  .about-visual {
+    position: relative;
+  }
+
+  .about-visual-inner {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .about-logo-large {
+    width: 50%;
+    filter: drop-shadow(0 0 40px rgba(var(--accent-rgb),0.4));
+    animation: logo-float-static 6s ease-in-out infinite;
+    position: relative;
+    z-index: 1;
+  }
+  @keyframes logo-float-static {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+  }
+
+  .about-corner {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-color: rgba(var(--accent-rgb),0.5);
+    border-style: solid;
+    z-index: 2;
+  }
+  .about-corner.tl { top: 14px; left: 14px; border-width: 2px 0 0 2px; }
+  .about-corner.tr { top: 14px; right: 14px; border-width: 2px 2px 0 0; }
+  .about-corner.bl { bottom: 14px; left: 14px; border-width: 0 0 2px 2px; }
+  .about-corner.br { bottom: 14px; right: 14px; border-width: 0 2px 2px 0; }
+
+  .about-text p {
+    font-size: 0.9rem;
+    line-height: 1.9;
+    color: var(--text-muted);
+    margin-bottom: 1.2rem;
+  }
+
+  .about-text p strong {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  .about-values {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 2rem;
+  }
+
+  .value-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--text-main);
+    text-transform: uppercase;
+  }
+
+  .value-dot {
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 6px var(--gold);
+  }
+
+  /* ─── SERVICES ─── */
+  .services-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 4rem;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+  }
+
+  .service-card {
+    border-radius: 22px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.35s ease, background 0.35s ease, border-color 0.35s ease;
+  }
+
+  .service-card:hover { transform: translateY(-5px); }
+
+  .service-icon {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    border: 1px solid rgba(var(--accent-rgb),0.25);
+    background: rgba(var(--accent-rgb),0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.8rem;
+    position: relative;
+    transition: border-color 0.3s ease;
+  }
+
+  .service-card:hover .service-icon { border-color: var(--gold); }
+
+  .service-icon svg {
+    width: 24px; height: 24px;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .service-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 1rem;
+    color: var(--text-main);
+    transition: color 0.3s ease;
+  }
+  .service-card:hover .service-name { color: var(--gold-light); }
+
+  .service-desc {
+    font-size: 0.82rem;
+    line-height: 1.75;
+    color: var(--text-muted);
+  }
+
+  .service-num {
+    position: absolute;
+    bottom: 1.5rem; right: 2rem;
+    font-family: 'Cinzel', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: rgba(var(--accent-rgb),0.06);
+    line-height: 1;
+    transition: color 0.3s ease;
+    user-select: none;
+    z-index: 1 !important;
+  }
+  .service-card:hover .service-num { color: rgba(var(--accent-rgb),0.12); }
+
+  /* ─── WHY NEXTGEN ─── */
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+    margin-top: 4rem;
+  }
+
+  .why-features {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .why-feature {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    padding: 1.5rem 1.6rem;
+    border-radius: 18px;
+    transition: background 0.3s ease;
+  }
+
+  .why-num {
+    font-family: 'Cinzel', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: rgba(var(--accent-rgb),0.35);
+    min-width: 2rem;
+    line-height: 1;
+  }
+
+  .why-text h4 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-main);
+    margin-bottom: 0.4rem;
+  }
+
+  .why-text p {
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+  }
+
+  .why-visual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .why-metric {
+    padding: 2rem;
+    border-radius: 20px;
+    text-align: center;
+  }
+
+  .why-metric-num {
+    font-family: 'Cinzel', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+
+  .why-metric-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  /* ─── PORTFOLIO SHOWCASE ─── */
+  .portfolio-strip {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 260px 260px;
+    gap: 1rem;
+    margin-top: 4rem;
+  }
+
+  .portfolio-item {
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+    display: flex;
+    align-items: flex-end;
+    padding: 2rem;
+    border-radius: 22px;
+    transition: transform 0.35s ease;
+  }
+
+  .portfolio-item:hover { transform: translateY(-5px); }
+
+  .portfolio-item.large { grid-row: 1 / 3; }
+
+  .portfolio-item .glass-tint {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--tint-overlay) 0%, transparent 60%);
+    z-index: 1;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .portfolio-bg {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-size: 5rem;
+    font-weight: 900;
+    color: rgba(var(--accent-rgb),0.05);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.4s ease, font-size 0.4s ease;
+    z-index: 1;
+  }
+
+  .portfolio-item:hover .portfolio-bg {
+    color: rgba(var(--accent-rgb),0.09);
+    font-size: 5.5rem;
+  }
+
+  .portfolio-info {
+    position: relative;
+    z-index: 3;
+  }
+
+  .portfolio-tag {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .portfolio-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  /* ─── PROCESS ─── */
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    margin-top: 5rem;
+    position: relative;
+  }
+
+  .process-grid::before {
+    content: '';
+    position: absolute;
+    top: 28px;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(var(--accent-rgb),0.3), transparent);
+    z-index: 0;
+  }
+
+  .process-step {
+    text-align: center;
+    padding: 1.8rem 1.2rem;
+    border-radius: 20px;
+    transition: transform 0.3s ease;
+  }
+  .process-step:hover { transform: translateY(-4px); }
+
+  .process-dot {
+    width: 56px; height: 56px;
+    border: 1px solid rgba(var(--accent-rgb),0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    background: var(--process-dot-bg);
+    position: relative;
+    z-index: 1;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background var(--transition-theme);
+  }
+
+  .process-step:hover .process-dot {
+    border-color: var(--gold);
+    box-shadow: 0 0 20px rgba(var(--accent-rgb),0.3);
+  }
+
+  .process-dot-num {
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .process-step-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+  }
+
+  .process-step-desc {
+    font-size: 0.78rem;
+    line-height: 1.65;
+    color: var(--text-dim);
+  }
+
+  /* ─── TESTIMONIALS ─── */
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+    margin-top: 4rem;
+  }
+
+  .testimonial-card {
+    padding: 2.5rem;
+    border-radius: 22px;
+    transition: transform 0.3s ease;
+  }
+  .testimonial-card:hover { transform: translateY(-4px); }
+
+  .testimonial-quote {
+    font-family: 'Cinzel', serif;
+    font-size: 3rem;
+    color: rgba(var(--accent-rgb),0.25);
+    line-height: 0.8;
+    margin-bottom: 1.2rem;
+  }
+
+  .testimonial-text {
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .testimonial-avatar {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--black);
+    flex-shrink: 0;
+  }
+
+  .testimonial-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-main);
+    margin-bottom: 0.15rem;
+  }
+
+  .testimonial-role {
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+
+  /* ─── CTA BAND ─── */
+  .cta-band {
+    position: relative;
+    z-index: 1;
+    padding: 7rem 6rem;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .cta-band-card {
+    border-radius: 32px;
+    padding: 4.5rem 3rem;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  .cta-band-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 1.2rem;
+    line-height: 1.15;
+  }
+
+  .cta-band-title .gold { color: var(--gold); }
+
+  .cta-band-sub {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.25em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+  }
+
+  .cta-band-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .cta-band-line::before, .cta-band-line::after {
+    content: '';
+    width: 80px;
+    height: 1px;
+    background: rgba(var(--accent-rgb),0.3);
+  }
+
+  .cta-band-email {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    position: relative;
+    z-index: 1;
+    padding: 4rem 6rem 2.5rem;
+  }
+
+  .footer-card {
+    border-radius: 28px;
+    padding: 3rem;
+  }
+
+  .footer-main {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 4rem;
+  }
+
+  .footer-brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-brand-logo img, .footer-brand-logo svg {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 8px rgba(var(--accent-rgb),0.4));
+  }
+
+  .footer-brand-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    line-height: 1.2;
+  }
+  .footer-brand-name span {
+    display: block;
+    font-size: 0.62rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    letter-spacing: 0.22em;
+  }
+
+  .footer-brand-desc {
+    font-size: 0.82rem;
+    line-height: 1.75;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    max-width: 280px;
+  }
+
+  .footer-tagline {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.35em;
+    color: rgba(var(--accent-rgb),0.5);
+    text-transform: uppercase;
+  }
+
+  .footer-col-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer-links a {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .footer-links a::before {
+    content: '›';
+    color: rgba(var(--accent-rgb),0.4);
+    transition: color 0.25s ease, transform 0.25s ease;
+    display: inline-block;
+  }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-links a:hover::before { color: var(--gold); transform: translateX(3px); }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(var(--accent-rgb),0.10);
+  }
+
+  .footer-copy {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  .footer-copy span { color: var(--gold); }
+
+  .footer-legal {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .footer-legal a {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.25s ease;
+  }
+  .footer-legal a:hover { color: var(--gold); }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.75s ease, transform 0.75s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── TICKER ─── */
+  .ticker-wrap {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    border-top: 1px solid rgba(var(--accent-rgb),0.1);
+    border-bottom: 1px solid rgba(var(--accent-rgb),0.1);
+    background: rgba(255,255,255,0.02);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 0.9rem 0;
+  }
+
+  .ticker {
+    display: flex;
+    gap: 0;
+    animation: ticker 28s linear infinite;
+    width: max-content;
+  }
+
+  .ticker-item {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    padding: 0 2.5rem;
+    white-space: nowrap;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: rgba(var(--accent-rgb),0.45);
+    text-transform: uppercase;
+  }
+
+  .ticker-sep {
+    width: 4px; height: 4px;
+    background: rgba(var(--accent-rgb),0.3);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1024px) {
+    nav { padding: 1rem 2rem; }
+    section { padding: 5rem 2.5rem; }
+    .stats-strip { padding: 3rem 2.5rem; grid-template-columns: repeat(2, 1fr); }
+    .about-grid, .why-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .footer-main { grid-template-columns: 1fr 1fr; }
+    footer { padding: 3rem 2.5rem 2rem; }
+    .cta-band { padding: 5rem 2.5rem; }
+    .portfolio-strip { grid-template-columns: 1fr; grid-template-rows: auto; }
+    .portfolio-item.large { grid-row: auto; }
+    .process-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .process-grid::before { display: none; }
+    .nav-links { display: none; }
+  }
+  @media (max-width: 640px) {
+    .services-grid, .process-grid { grid-template-columns: 1fr; }
+    .stats-strip { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Liquid-glass refraction filter: feTurbulence generates a fine noise
+     field, feDisplacementMap uses it to bend backdrop pixels at the glass
+     edges, mimicking the way real glass refracts light passing through it.
+     (Chromium-only; other browsers fall back gracefully to blur+saturate.) -->
+<svg style="position:absolute; width:0; height:0; overflow:hidden;" aria-hidden="true">
+  <filter id="liquid-distort" x="-20%" y="-20%" width="140%" height="140%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.018" numOctaves="2" seed="7" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="16" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <linearGradient id="phx" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#E8C84A"/>
+    <stop offset="100%" stop-color="#9A7A1E"/>
+  </linearGradient>
+</svg>
+
+<!-- ─── CUSTOM CURSOR ─── -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ─── AURA CANVAS ─── -->
+<canvas id="aura-canvas"></canvas>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <div class="nav-logo">
+    <img src="assets/images/Picsart_26-06-21_01-33-41-793.webp" alt="Srayudu Nextgen Logo">
+    <div class="nav-brand">
+      SRAYUDU NEXTGEN
+      <span>Technologies Private Limited</span>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cta">Get a Quote</button>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark mode" title="Toggle light/dark mode">
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+  </button>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-logo-wrap">
+    <div class="hero-logo-glass glass"></div>
+    <div class="ring-orbit r2"><span class="pip"></span></div>
+    <div class="ring-orbit r1"><span class="pip"></span></div>
+    <img src="assets/images/Picsart_26-06-21_01-33-41-793.webp" alt="Srayudu Nextgen Technologies">
+  </div>
+  <div class="hero-eyebrow">Hyderabad, India &nbsp;·&nbsp; Est. 2024</div>
+  <h1 class="hero-title">
+    <span class="gold">Srayudu</span> <span class="outline">Nextgen</span>
+  </h1>
+  <p class="hero-sub">Technologies Private Limited</p>
+  <p class="hero-tagline">Beyond Innovation. Building the Future.</p>
+  <div class="hero-btns">
+    <a href="#services" class="btn-primary">Explore Services</a>
+    <a href="#contact" class="btn-secondary">Start a Project</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <div class="scroll-label">Scroll</div>
+  </div>
+</section>
+
+<!-- ─── TICKER ─── -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker">
+    <div class="ticker-item">AI Solutions<span class="ticker-sep"></span></div>
+    <div class="ticker-item">Web Development<span class="ticker-sep"></span></div>
+    <div class="ticker-item">Mobile Applications<span class="ticker-sep"></span></div>
+    <div class="ticker-item">Cloud Architecture<span class="ticker-sep"></span></div>
+    <div class="ticker-item">Cybersecurity<span class="ticker-sep"></span></div>
+    <div class="ticker-item">Data Analytics<span class="ticker-sep"></span></div>
+    <div class="ticker-item">Enterprise Software<span class="ticker-sep"></span></div>
+    <div class="ticker-item">UI/UX Design<span class="ticker-sep"></span></div>
+    <div class="ticker-item">DevOps<span class="ticker-sep"></span></div>
+    <div class="ticker-item">Blockchain<span class="ticker-sep"></span></div>
+    <div class="ticker-item">AI Solutions<span class="ticker-sep"></span></div>
+    <div class="ticker-item">Web Development<span class="ticker-sep"></span></div>
+    <div class="ticker-item">Mobile Applications<span class="ticker-sep"></span></div>
+    <div class="ticker-item">Cloud Architecture<span class="ticker-sep"></span></div>
+    <div class="ticker-item">Cybersecurity<span class="ticker-sep"></span></div>
+    <div class="ticker-item">Data Analytics<span class="ticker-sep"></span></div>
+    <div class="ticker-item">Enterprise Software<span class="ticker-sep"></span></div>
+    <div class="ticker-item">UI/UX Design<span class="ticker-sep"></span></div>
+    <div class="ticker-item">DevOps<span class="ticker-sep"></span></div>
+    <div class="ticker-item">Blockchain<span class="ticker-sep"></span></div>
+  </div>
+</div>
+
+<!-- ─── STATS STRIP ─── -->
+<div class="stats-strip reveal">
+  <div class="stat-item glass">
+    <div class="stat-number" data-count="150">0</div>
+    <div class="stat-label">Projects Delivered</div>
+  </div>
+  <div class="stat-item glass">
+    <div class="stat-number" data-count="80">0</div>
+    <div class="stat-label">Clients Worldwide</div>
+  </div>
+  <div class="stat-item glass">
+    <div class="stat-number" data-count="25">0</div>
+    <div class="stat-label">Expert Engineers</div>
+  </div>
+  <div class="stat-item glass">
+    <div class="stat-number" data-count="98">0</div>
+    <div class="stat-label">% Client Satisfaction</div>
+  </div>
+</div>
+
+<!-- ─── ABOUT ─── -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-visual reveal">
+      <div class="about-visual-inner glass">
+        <img src="assets/images/Picsart_26-06-21_01-28-24-504.webp" alt="Srayudu Nextgen" class="about-logo-large">
+        <div class="about-corner tl"></div>
+        <div class="about-corner tr"></div>
+        <div class="about-corner bl"></div>
+        <div class="about-corner br"></div>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <div class="section-eyebrow">Who We Are</div>
+      <h2 class="section-title">A New Era of<br><span style="color:var(--gold)">Technology</span> Begins Here</h2>
+      <p>At <strong>Srayudu Nextgen Technologies</strong>, we are more than a technology company — we are architects of tomorrow. Founded with the mission to push the boundaries of what's possible, we deliver digital solutions that transform businesses and redefine industries.</p>
+      <p>Headquartered in Hyderabad — India's tech capital — we combine <strong>cutting-edge AI</strong>, enterprise-grade engineering, and creative design thinking to build products that scale, perform, and lead.</p>
+      <p>Our phoenix emblem stands for what we believe: every great business rises, evolves, and soars. We're here to help yours do exactly that.</p>
+      <div class="about-values">
+        <div class="value-item"><div class="value-dot"></div>Innovation without compromise</div>
+        <div class="value-item"><div class="value-dot"></div>Transparency in every engagement</div>
+        <div class="value-item"><div class="value-dot"></div>Excellence as a standard, not a goal</div>
+        <div class="value-item"><div class="value-dot"></div>Partnerships built on trust</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-diamond"></div></div>
+
+<!-- ─── SERVICES ─── -->
+<section id="services">
+  <div class="services-header reveal">
+    <div>
+      <div class="section-eyebrow">What We Build</div>
+      <h2 class="section-title">Services That<br><span style="color:var(--gold)">Drive Results</span></h2>
+    </div>
+    <p class="section-desc">From ideation to deployment, our end-to-end technology solutions are engineered to give your business a competitive edge in the digital era.</p>
+  </div>
+
+  <div class="services-grid reveal">
+    <div class="service-card glass">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <div class="service-name">AI & Machine Learning</div>
+      <div class="service-desc">Intelligent automation, predictive analytics, NLP, and custom AI models that give your business superhuman capabilities.</div>
+      <div class="service-num">01</div>
+    </div>
+
+    <div class="service-card glass">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <div class="service-name">Web Development</div>
+      <div class="service-desc">High-performance web applications with modern frameworks — React, Next.js, Node.js — built to scale from day one.</div>
+      <div class="service-num">02</div>
+    </div>
+
+    <div class="service-card glass">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+      </div>
+      <div class="service-name">Mobile Applications</div>
+      <div class="service-desc">Native iOS and Android apps and cross-platform solutions with buttery UX that users love to return to.</div>
+      <div class="service-num">03</div>
+    </div>
+
+    <div class="service-card glass">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-4.4-6.5"/><path d="M8 15l3-3-3-3"/><path d="M8 12h6"/></svg>
+      </div>
+      <div class="service-name">Cloud Architecture</div>
+      <div class="service-desc">Secure, scalable AWS / Azure / GCP infrastructure. DevOps pipelines, Kubernetes orchestration, and zero-downtime deployments.</div>
+      <div class="service-num">04</div>
+    </div>
+
+    <div class="service-card glass">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="service-name">Cybersecurity</div>
+      <div class="service-desc">Penetration testing, threat modeling, compliance audits, and real-time monitoring that keeps your assets protected.</div>
+      <div class="service-num">05</div>
+    </div>
+
+    <div class="service-card glass">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </div>
+      <div class="service-name">Data & Analytics</div>
+      <div class="service-desc">Business intelligence dashboards, data pipelines, and real-time analytics that transform raw data into strategic insight.</div>
+      <div class="service-num">06</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── WHY NEXTGEN ─── -->
+<section id="why">
+  <div class="why-grid">
+    <div class="reveal">
+      <div class="section-eyebrow">Our Edge</div>
+      <h2 class="section-title">Why <span style="color:var(--gold)">Nextgen</span><br>Stands Apart</h2>
+      <div class="why-features">
+        <div class="why-feature glass">
+          <div class="why-num">I</div>
+          <div class="why-text">
+            <h4>Next-Gen by Name, Nature & Execution</h4>
+            <p>We don't adopt trends — we engineer them. Our R&D team continuously explores emerging technologies to give clients a first-mover advantage.</p>
+          </div>
+        </div>
+        <div class="why-feature glass">
+          <div class="why-num">II</div>
+          <div class="why-text">
+            <h4>Full-Spectrum Ownership</h4>
+            <p>From wireframe to live product, we own the entire delivery chain. No outsourcing, no middlemen — just focused, accountable engineering.</p>
+          </div>
+        </div>
+        <div class="why-feature glass">
+          <div class="why-num">III</div>
+          <div class="why-text">
+            <h4>Speed Without Sacrifice</h4>
+            <p>Agile at our core with enterprise-grade discipline. We ship fast, iterate smarter, and maintain code quality that stands the test of scale.</p>
+          </div>
+        </div>
+        <div class="why-feature glass">
+          <div class="why-num">IV</div>
+          <div class="why-text">
+            <h4>Hyderabad Talent, Global Standards</h4>
+            <p>Rooted in India's premier tech hub, our engineers hold global certifications and deliver to international quality benchmarks every time.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="why-visual reveal">
+      <div class="why-metric glass"><div class="why-metric-num">5x</div><div class="why-metric-label">Faster Delivery</div></div>
+      <div class="why-metric glass"><div class="why-metric-num">99.9%</div><div class="why-metric-label">Uptime SLA</div></div>
+      <div class="why-metric glass"><div class="why-metric-num">40+</div><div class="why-metric-label">Tech Stack</div></div>
+      <div class="why-metric glass"><div class="why-metric-num">24/7</div><div class="why-metric-label">Support</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PORTFOLIO ─── -->
+<section id="portfolio">
+  <div class="reveal">
+    <div class="section-eyebrow">Our Work</div>
+    <h2 class="section-title">Projects That<br><span style="color:var(--gold)">Define Industries</span></h2>
+  </div>
+  <div class="portfolio-strip reveal">
+    <div class="portfolio-item large glass">
+      <div class="glass-tint"></div>
+      <div class="portfolio-bg">AI</div>
+      <div class="portfolio-info">
+        <div class="portfolio-tag">Artificial Intelligence</div>
+        <div class="portfolio-name">Enterprise AI Platform — Fintech</div>
+      </div>
+    </div>
+    <div class="portfolio-item glass">
+      <div class="glass-tint"></div>
+      <div class="portfolio-bg">WEB</div>
+      <div class="portfolio-info">
+        <div class="portfolio-tag">E-Commerce</div>
+        <div class="portfolio-name">Next-Gen Retail Portal</div>
+      </div>
+    </div>
+    <div class="portfolio-item glass">
+      <div class="glass-tint"></div>
+      <div class="portfolio-bg">APP</div>
+      <div class="portfolio-info">
+        <div class="portfolio-tag">HealthTech</div>
+        <div class="portfolio-name">Patient Connect App</div>
+      </div>
+    </div>
+    <div class="portfolio-item glass">
+      <div class="glass-tint"></div>
+      <div class="portfolio-bg">DATA</div>
+      <div class="portfolio-info">
+        <div class="portfolio-tag">Analytics</div>
+        <div class="portfolio-name">Real-Time BI Dashboard</div>
+      </div>
+    </div>
+    <div class="portfolio-item glass">
+      <div class="glass-tint"></div>
+      <div class="portfolio-bg">SEC</div>
+      <div class="portfolio-info">
+        <div class="portfolio-tag">Cybersecurity</div>
+        <div class="portfolio-name">Zero-Trust Cloud Setup</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PROCESS ─── -->
+<section id="process">
+  <div class="reveal" style="text-align:center; max-width:500px; margin:0 auto;">
+    <div class="section-eyebrow">How We Work</div>
+    <h2 class="section-title">Our Proven<br><span style="color:var(--gold)">Delivery Process</span></h2>
+  </div>
+  <div class="process-grid reveal">
+    <div class="process-step glass">
+      <div class="process-dot"><span class="process-dot-num">01</span></div>
+      <div class="process-step-name">Discover</div>
+      <div class="process-step-desc">Deep-dive workshops to map your vision, users, and technical requirements.</div>
+    </div>
+    <div class="process-step glass">
+      <div class="process-dot"><span class="process-dot-num">02</span></div>
+      <div class="process-step-name">Architect</div>
+      <div class="process-step-desc">System design, stack selection, and scalability blueprinting.</div>
+    </div>
+    <div class="process-step glass">
+      <div class="process-dot"><span class="process-dot-num">03</span></div>
+      <div class="process-step-name">Build</div>
+      <div class="process-step-desc">Agile sprints with daily standups and transparent progress tracking.</div>
+    </div>
+    <div class="process-step glass">
+      <div class="process-dot"><span class="process-dot-num">04</span></div>
+      <div class="process-step-name">Launch</div>
+      <div class="process-step-desc">QA-tested deployment with zero-downtime release and monitoring.</div>
+    </div>
+    <div class="process-step glass">
+      <div class="process-dot"><span class="process-dot-num">05</span></div>
+      <div class="process-step-name">Evolve</div>
+      <div class="process-step-desc">Continuous improvement, performance tuning, and feature growth.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TESTIMONIALS ─── -->
+<section id="testimonials">
+  <div class="reveal" style="text-align:center; max-width:500px; margin:0 auto 0;">
+    <div class="section-eyebrow">Client Voices</div>
+    <h2 class="section-title">What Our <span style="color:var(--gold)">Partners Say</span></h2>
+  </div>
+  <div class="testimonials-grid reveal">
+    <div class="testimonial-card glass">
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text">Srayudu Nextgen delivered our AI-powered analytics platform in record time. Their attention to architecture and performance exceeded every expectation we had. Phenomenal team.</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">RK</div>
+        <div>
+          <div class="testimonial-name">Rajesh Kumar</div>
+          <div class="testimonial-role">CTO, Finova Capital</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card glass">
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text">We partnered with SNTPL for our e-commerce overhaul and the results were transformative. 3x faster load times, 40% higher conversions, and an award-winning design.</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">PS</div>
+        <div>
+          <div class="testimonial-name">Priya Sharma</div>
+          <div class="testimonial-role">Founder, StyleNova</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card glass">
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text">Their cybersecurity team identified vulnerabilities our internal team missed for years. The remediation and zero-trust setup gave us complete peace of mind. Highly recommended.</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">AM</div>
+        <div>
+          <div class="testimonial-name">Arun Mehta</div>
+          <div class="testimonial-role">CISO, MediCare Systems</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA BAND ─── -->
+<section id="contact" class="cta-band">
+  <div class="cta-band-card glass reveal">
+    <div class="section-eyebrow">Ready to Rise?</div>
+    <h2 class="cta-band-title">Let's Build the <span class="gold">Future</span><br>Together</h2>
+    <p class="cta-band-sub">Your next breakthrough starts with one conversation</p>
+    <div class="cta-band-line">
+      <span class="cta-band-email">hello@srayudunextgen.com</span>
+    </div>
+    <div style="display:flex; gap:1.2rem; justify-content:center;">
+      <a href="mailto:hello@srayudunextgen.com" class="btn-primary">Contact Us Today</a>
+      <a href="#services" class="btn-secondary">View Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-card glass">
+    <div class="footer-main">
+      <div>
+        <div class="footer-brand-logo">
+          <img src="assets/images/Picsart_26-06-21_01-33-41-793.webp" alt="Logo">
+          <div class="footer-brand-name">
+            SRAYUDU NEXTGEN
+            <span>Technologies Private Limited</span>
+          </div>
+        </div>
+        <p class="footer-brand-desc">Hyderabad's next-generation technology company crafting AI solutions, web platforms, and digital experiences that define tomorrow.</p>
+        <p class="footer-tagline">Beyond Innovation. Building the Future.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#process">Our Process</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <ul class="footer-links">
+          <li><a href="#">AI & ML</a></li>
+          <li><a href="#">Web Development</a></li>
+          <li><a href="#">Mobile Apps</a></li>
+          <li><a href="#">Cloud Solutions</a></li>
+          <li><a href="#">Cybersecurity</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Connect</div>
+        <ul class="footer-links">
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Twitter / X</a></li>
+          <li><a href="#">GitHub</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#contact">Get in Touch</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 <span>Srayudu Nextgen Technologies Pvt Ltd</span>. All rights reserved.</p>
+      <ul class="footer-legal">
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Cookie Policy</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ─── AURA PARTICLE CANVAS ───
+const canvas = document.getElementById('aura-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+let mouseX = 0, mouseY = 0;
+
+// reads the current theme's particle color (set in CSS as --particle-color,
+// e.g. "201,162,39") so the canvas glow matches dark or light mode
+function getParticleRGB() {
+  const v = getComputedStyle(document.documentElement).getPropertyValue('--particle-color').trim();
+  return v || '201,162,39';
+}
+let particleRGB = getParticleRGB();
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.size = Math.random() * 1.5 + 0.3;
+    this.speedX = (Math.random() - 0.5) * 0.3;
+    this.speedY = (Math.random() - 0.5) * 0.3;
+    this.life = Math.random();
+    this.maxLife = Math.random() * 0.4 + 0.2;
+    this.opacity = 0;
+    this.growing = true;
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+
+    const dx = mouseX - this.x;
+    const dy = mouseY - this.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 300) {
+      this.x += (dx / dist) * 0.15;
+      this.y += (dy / dist) * 0.15;
+    }
+
+    if (this.growing) {
+      this.opacity += 0.004;
+      if (this.opacity >= this.maxLife) this.growing = false;
+    } else {
+      this.opacity -= 0.003;
+      if (this.opacity <= 0) this.reset();
+    }
+
+    if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+  }
+  draw() {
+    ctx.save();
+    ctx.globalAlpha = this.opacity;
+    ctx.fillStyle = `rgb(${particleRGB})`;
+    ctx.shadowBlur = 6;
+    ctx.shadowColor = `rgba(${particleRGB},0.5)`;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+class AuraOrb {
+  constructor(delay) {
+    this.x = W / 2; this.y = H / 2;
+    this.delay = delay;
+    this.size = Math.random() * 120 + 80;
+    this.opacity = Math.random() * 0.04 + 0.01;
+  }
+  update(tx, ty) {
+    this.x += (tx - this.x) * (0.02 / this.delay);
+    this.y += (ty - this.y) * (0.02 / this.delay);
+  }
+  draw() {
+    const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+    grad.addColorStop(0, `rgba(${particleRGB},${this.opacity})`);
+    grad.addColorStop(1, `rgba(${particleRGB},0)`);
+    ctx.save();
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+for (let i = 0; i < 120; i++) particles.push(new Particle());
+const orbs = [new AuraOrb(1), new AuraOrb(2), new AuraOrb(3)];
+
+function loop() {
+  ctx.clearRect(0, 0, W, H);
+  orbs.forEach(o => { o.update(mouseX, mouseY); o.draw(); });
+  particles.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(loop);
+}
+loop();
+
+window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+
+// ─── THEME TOGGLE ───
+// Switches html[data-theme] between dark (default, no attribute) and
+// "light". Held in a JS variable for this session only — artifacts can't
+// use localStorage, so the choice resets on reload.
+const themeToggle = document.getElementById('themeToggle');
+const htmlEl = document.documentElement;
+themeToggle.addEventListener('click', () => {
+  const isLight = htmlEl.getAttribute('data-theme') === 'light';
+  htmlEl.setAttribute('data-theme', isLight ? 'dark' : 'light');
+  // re-read the new theme's particle color for the canvas glow/orbs
+  particleRGB = getParticleRGB();
+});
+
+// ─── CUSTOM CURSOR ───
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let cx = 0, cy = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; });
+
+function animateCursor() {
+  cursor.style.left = cx + 'px';
+  cursor.style.top = cy + 'px';
+  rx += (cx - rx) * 0.12;
+  ry += (cy - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.width = '20px';
+    cursor.style.height = '20px';
+    ring.style.borderColor = 'rgba(var(--accent-rgb),0.8)';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.width = '12px';
+    cursor.style.height = '12px';
+    ring.style.borderColor = 'rgba(var(--accent-rgb),0.5)';
+  });
+});
+
+// ─── LIQUID GLASS CURSOR GLINT ───
+// tracks pointer position per glass panel so the specular highlight
+// slides with the cursor, like light moving across a real curved glass pane
+document.querySelectorAll('.glass').forEach(el => {
+  el.addEventListener('mousemove', e => {
+    const r = el.getBoundingClientRect();
+    const mx = ((e.clientX - r.left) / r.width) * 100;
+    const my = ((e.clientY - r.top) / r.height) * 100;
+    el.style.setProperty('--mx', mx + '%');
+    el.style.setProperty('--my', my + '%');
+  });
+  el.addEventListener('mouseleave', () => {
+    el.style.setProperty('--mx', '50%');
+    el.style.setProperty('--my', '0%');
+  });
+});
+
+// ─── SCROLL REVEAL ───
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(r => observer.observe(r));
+
+// ─── COUNTER ANIMATION ───
+function animateCounter(el, target, suffix = '') {
+  let current = 0;
+  const increment = target / 60;
+  const timer = setInterval(() => {
+    current += increment;
+    if (current >= target) {
+      current = target;
+      clearInterval(timer);
+    }
+    el.textContent = Math.floor(current) + suffix;
+  }, 25);
+}
+
+const statsObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('[data-count]').forEach(el => {
+        const count = parseInt(el.dataset.count);
+        animateCounter(el, count, el.closest('.stat-item').querySelector('.stat-label').textContent.includes('%') ? '%' : '+');
+      });
+      statsObs.disconnect();
+    }
+  });
+}, { threshold: 0.5 });
+
+const statsStrip = document.querySelector('.stats-strip');
+if (statsStrip) statsObs.observe(statsStrip);
+
+// ─── SMOOTH SCROLL ───
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
