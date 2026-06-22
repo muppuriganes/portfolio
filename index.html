@@ -110,6 +110,12 @@
     transform: translate(-50%, -50%);
     transition: transform 0.18s ease, border-color 0.2s ease;
   }
+  /* Hide custom cursor on touch/mobile — use native cursor instead */
+  @media (hover: none) and (pointer: coarse) {
+    .cursor, .cursor-ring { display: none !important; }
+    body { cursor: auto !important; }
+    a, button { cursor: pointer !important; }
+  }
 
   /* ─── AURA CANVAS ─── */
   #aura-canvas {
@@ -2106,36 +2112,40 @@ document.addEventListener('click', e => {
   }
 });
 
-// ─── CUSTOM CURSOR ───
+// ─── CUSTOM CURSOR (mouse-only — disabled on touch devices) ───
+const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursorRing');
-let cx = 0, cy = 0, rx = 0, ry = 0;
 
-document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; });
+if (!isTouchDevice) {
+  let cx = 0, cy = 0, rx = 0, ry = 0;
 
-function animateCursor() {
-  cursor.style.left = cx + 'px';
-  cursor.style.top = cy + 'px';
-  rx += (cx - rx) * 0.12;
-  ry += (cy - ry) * 0.12;
-  ring.style.left = rx + 'px';
-  ring.style.top = ry + 'px';
-  requestAnimationFrame(animateCursor);
+  document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; });
+
+  function animateCursor() {
+    cursor.style.left = cx + 'px';
+    cursor.style.top = cy + 'px';
+    rx += (cx - rx) * 0.12;
+    ry += (cy - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '20px';
+      cursor.style.height = '20px';
+      ring.style.borderColor = 'rgba(var(--accent-rgb),0.8)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '12px';
+      cursor.style.height = '12px';
+      ring.style.borderColor = 'rgba(var(--accent-rgb),0.5)';
+    });
+  });
 }
-animateCursor();
-
-document.querySelectorAll('a, button').forEach(el => {
-  el.addEventListener('mouseenter', () => {
-    cursor.style.width = '20px';
-    cursor.style.height = '20px';
-    ring.style.borderColor = 'rgba(var(--accent-rgb),0.8)';
-  });
-  el.addEventListener('mouseleave', () => {
-    cursor.style.width = '12px';
-    cursor.style.height = '12px';
-    ring.style.borderColor = 'rgba(var(--accent-rgb),0.5)';
-  });
-});
 
 // ─── LIQUID GLASS CURSOR GLINT ───
 document.querySelectorAll('.glass').forEach(el => {
