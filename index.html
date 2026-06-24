@@ -15,8 +15,8 @@
     --black-2: #0A0A0A;
     --black-3: #111111;
     --black-4: #1A1A1A;
-    --text-muted: #888;
-    --text-dim: #555;
+    --text-muted: #ABABAB;
+    --text-dim: #999;
     --text-main: #fff;
     --bg-main: var(--black);
     --accent: var(--gold);
@@ -51,8 +51,8 @@
     --black-2: #FFFFFF;
     --black-3: #F0F2F6;
     --black-4: #E7EAF1;
-    --text-muted: #5B6273;
-    --text-dim: #8A90A0;
+    --text-muted: #454C5E;
+    --text-dim: #5C6473;
     --text-main: #15192A;
     --bg-main: var(--black);
     --accent: var(--gold);
@@ -88,6 +88,7 @@
     cursor: none;
     transition: background var(--transition-theme), color var(--transition-theme);
   }
+  a, button { cursor: none; }
 
   /* ─── CUSTOM CURSOR ─── */
   .cursor {
@@ -126,33 +127,20 @@
     z-index: 0;
   }
 
-  /* ─── LIQUID GLASS PANEL ─── */
+  /* ─── LIGHT GLASS PANEL (perf-optimized: no SVG filter, no JS glint) ─── */
   .glass {
     position: relative;
     background: var(--glass-fill);
-    backdrop-filter: blur(20px) saturate(160%) url(#liquid-distort);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    backdrop-filter: blur(8px) saturate(130%);
+    -webkit-backdrop-filter: blur(8px) saturate(130%);
     border: 1px solid var(--glass-border);
     box-shadow:
       var(--glass-shadow),
       inset 0 1px 1px rgba(255,255,255,0.10),
-      inset 0 -14px 20px -14px rgba(var(--accent-rgb),0.08),
-      inset 0 0 0 1px rgba(255,255,255,0.02);
+      inset 0 -14px 20px -14px rgba(var(--accent-rgb),0.08);
+    background-image: linear-gradient(120deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 20%, transparent 40%);
     isolation: isolate;
-    transition: background 0.35s ease, border-color 0.35s ease;
-  }
-  .glass::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    background:
-      radial-gradient(circle 160px at var(--mx, 50%) var(--my, 0%), rgba(var(--glint-rgb),0.16), transparent 70%),
-      linear-gradient(120deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 20%, transparent 35%);
-    mix-blend-mode: screen;
-    z-index: 1;
-    transition: background 0.05s linear;
+    transition: background-color 0.35s ease, border-color 0.35s ease;
   }
   .glass::after {
     content: '';
@@ -164,7 +152,7 @@
     z-index: 1;
   }
   .glass > * { position: relative; z-index: 2; }
-  .glass:hover { background: var(--glass-fill-hover); border-color: rgba(var(--accent-rgb),0.4); }
+  .glass:hover { background-color: var(--glass-fill-hover); border-color: rgba(var(--accent-rgb),0.4); }
 
   /* ─── NAV ─── */
   nav {
@@ -235,8 +223,29 @@
     text-decoration: none;
     text-transform: uppercase;
     transition: color 0.3s ease;
+    position: relative;
+    padding-bottom: 4px;
+    cursor: none;
   }
   .nav-links a:hover { color: var(--gold); }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--gold);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .nav-links a.active {
+    color: var(--gold);
+  }
+  .nav-links a.active::after {
+    transform: scaleX(1);
+  }
 
   .nav-cta {
     font-family: 'Rajdhani', sans-serif;
@@ -322,6 +331,7 @@
     transition: color 0.25s ease;
   }
   .nav-drawer a:hover { color: var(--gold); }
+  .nav-drawer a.active { color: var(--gold); }
 
   .theme-toggle {
     width: 38px; height: 38px;
@@ -354,14 +364,14 @@
     flex-direction: column;
     text-align: center;
     z-index: 1;
-    padding: 6rem 2rem 4rem;
+    padding: 5.5rem 2rem 2rem;
   }
 
   .hero-logo-wrap {
     position: relative;
-    width: 220px;
-    height: 220px;
-    margin: 0 auto 2.5rem;
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 1.4rem;
     border-radius: 50%;
   }
 
@@ -437,14 +447,14 @@
     letter-spacing: 0.4em;
     color: var(--gold);
     text-transform: uppercase;
-    margin-bottom: 1.2rem;
+    margin-bottom: 0.8rem;
     opacity: 0;
     animation: fade-up 0.9s ease 0.4s forwards;
   }
 
   .hero-title {
     font-family: 'Cinzel', serif;
-    font-size: clamp(2.4rem, 6vw, 5rem);
+    font-size: clamp(2rem, 5vw, 3.8rem);
     font-weight: 700;
     line-height: 1.1;
     margin-bottom: 0.4rem;
@@ -466,7 +476,7 @@
     letter-spacing: 0.35em;
     color: var(--text-muted);
     text-transform: uppercase;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.4rem;
     opacity: 0;
     animation: fade-up 0.9s ease 0.85s forwards;
   }
@@ -478,7 +488,7 @@
     letter-spacing: 0.3em;
     color: rgba(var(--accent-rgb),0.6);
     text-transform: uppercase;
-    margin-bottom: 3.5rem;
+    margin-bottom: 2rem;
     opacity: 0;
     animation: fade-up 0.9s ease 1.05s forwards;
   }
@@ -536,39 +546,6 @@
     border-color: var(--gold);
     background: rgba(var(--accent-rgb),0.08);
     transform: translateY(-2px);
-  }
-
-  .hero-scroll {
-    position: absolute;
-    bottom: 2.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    opacity: 0;
-    animation: fade-up 0.9s ease 1.6s forwards;
-  }
-
-  .scroll-line {
-    width: 1px;
-    height: 50px;
-    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
-    animation: scroll-breathe 2s ease-in-out infinite;
-  }
-
-  .scroll-label {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 0.6rem;
-    letter-spacing: 0.35em;
-    color: var(--text-muted);
-    text-transform: uppercase;
-  }
-
-  @keyframes scroll-breathe {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 1; }
   }
 
   @keyframes fade-up {
@@ -637,7 +614,7 @@
   section {
     position: relative;
     z-index: 1;
-    padding: 7rem 6rem;
+    padding: 5rem 6rem;
   }
 
   .section-eyebrow {
@@ -647,15 +624,15 @@
     letter-spacing: 0.45em;
     color: var(--gold);
     text-transform: uppercase;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.6rem;
   }
 
   .section-title {
     font-family: 'Cinzel', serif;
-    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-size: clamp(1.6rem, 2.8vw, 2.3rem);
     font-weight: 700;
     line-height: 1.15;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     letter-spacing: 0.02em;
   }
 
@@ -666,13 +643,54 @@
     max-width: 520px;
   }
 
+  /* ─── STICKY MINI-HEADING (appears once section heading scrolls past) ─── */
+  .sticky-heading {
+    position: sticky;
+    top: 72px;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.65rem 1.1rem;
+    margin: -1.5rem -1.1rem 1.5rem;
+    background: var(--nav-bg);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid rgba(var(--accent-rgb),0.16);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .sticky-heading.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .sticky-heading .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 6px rgba(var(--accent-rgb),0.7);
+    flex-shrink: 0;
+  }
+  .sticky-heading-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
   /* ─── ABOUT ─── */
   .about-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 6rem;
     align-items: center;
-    margin-top: 4rem;
+    margin-top: 2.5rem;
   }
 
   .about-visual {
@@ -759,7 +777,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: 4rem;
+    margin-bottom: 2.5rem;
     gap: 2rem;
   }
 
@@ -815,7 +833,7 @@
   .service-card:hover .service-name { color: var(--gold-light); }
 
   .service-desc {
-    font-size: 0.82rem;
+    font-size: 0.86rem;
     line-height: 1.75;
     color: var(--text-muted);
   }
@@ -840,7 +858,7 @@
     grid-template-columns: 1fr 1fr;
     gap: 5rem;
     align-items: center;
-    margin-top: 4rem;
+    margin-top: 2.5rem;
   }
 
   .why-features {
@@ -878,7 +896,7 @@
   }
 
   .why-text p {
-    font-size: 0.82rem;
+    font-size: 0.86rem;
     line-height: 1.7;
     color: var(--text-muted);
   }
@@ -915,9 +933,9 @@
   .portfolio-strip {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
-    grid-template-rows: 260px 260px;
+    grid-template-rows: 200px 200px;
     gap: 1rem;
-    margin-top: 4rem;
+    margin-top: 2.5rem;
   }
 
   .portfolio-item {
@@ -929,7 +947,7 @@
     padding: 2rem;
     border-radius: 22px;
     transition: transform 0.35s ease;
-    min-height: 200px;
+    min-height: 160px;
   }
 
   .portfolio-item:hover { transform: translateY(-5px); }
@@ -955,7 +973,7 @@
     font-family: 'Cinzel', serif;
     font-size: 5rem;
     font-weight: 900;
-    color: rgba(var(--accent-rgb),0.05);
+    color: rgba(var(--accent-rgb),0.16);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     transition: color 0.4s ease, font-size 0.4s ease;
@@ -963,7 +981,7 @@
   }
 
   .portfolio-item:hover .portfolio-bg {
-    color: rgba(var(--accent-rgb),0.09);
+    color: rgba(var(--accent-rgb),0.24);
     font-size: 5.5rem;
   }
 
@@ -994,7 +1012,7 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 1rem;
-    margin-top: 5rem;
+    margin-top: 3rem;
     position: relative;
   }
 
@@ -1054,9 +1072,9 @@
   }
 
   .process-step-desc {
-    font-size: 0.78rem;
-    line-height: 1.65;
-    color: var(--text-dim);
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--text-muted);
   }
 
   /* ─── TESTIMONIALS ─── */
@@ -1064,7 +1082,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.2rem;
-    margin-top: 4rem;
+    margin-top: 2.5rem;
   }
 
   .testimonial-card {
@@ -1246,7 +1264,7 @@
   }
 
   .footer-brand-desc {
-    font-size: 0.82rem;
+    font-size: 0.86rem;
     line-height: 1.75;
     color: var(--text-muted);
     margin-bottom: 1.5rem;
@@ -1287,6 +1305,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    cursor: none;
   }
   .footer-links a::before {
     content: '›';
@@ -1328,6 +1347,7 @@
     text-decoration: none;
     letter-spacing: 0.08em;
     transition: color 0.25s ease;
+    cursor: none;
   }
   .footer-legal a:hover { color: var(--gold); }
 
@@ -1448,7 +1468,6 @@
     .hero-eyebrow { font-size: 0.6rem; letter-spacing: 0.28em; }
     .hero-btns { flex-direction: column; align-items: center; gap: 0.9rem; }
     .btn-primary, .btn-secondary { width: 100%; max-width: 280px; text-align: center; }
-    .hero-scroll { display: none; }
 
     /* Stats */
     .stats-strip { padding: 2rem 1.25rem; gap: 0.8rem; }
@@ -1517,10 +1536,6 @@
 <body>
 
 <svg style="position:absolute; width:0; height:0; overflow:hidden;" aria-hidden="true">
-  <filter id="liquid-distort" x="-20%" y="-20%" width="140%" height="140%">
-    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.018" numOctaves="2" seed="7" result="noise"/>
-    <feDisplacementMap in="SourceGraphic" in2="noise" scale="16" xChannelSelector="R" yChannelSelector="G"/>
-  </filter>
   <linearGradient id="phx" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0%" stop-color="#E8C84A"/>
     <stop offset="100%" stop-color="#9A7A1E"/>
@@ -1587,10 +1602,6 @@
     <a href="#services" class="btn-primary">Explore Services</a>
     <a href="#contact" class="btn-secondary">Start a Project</a>
   </div>
-  <div class="hero-scroll">
-    <div class="scroll-line"></div>
-    <div class="scroll-label">Scroll</div>
-  </div>
 </section>
 
 <!-- ─── TICKER ─── -->
@@ -1641,6 +1652,10 @@
 
 <!-- ─── ABOUT ─── -->
 <section id="about">
+  <div class="sticky-heading" data-sticky-for="about">
+    <span class="dot"></span>
+    <span class="sticky-heading-label">Who We Are</span>
+  </div>
   <div class="about-grid">
     <div class="about-visual reveal">
       <div class="about-visual-inner glass">
@@ -1671,6 +1686,10 @@
 
 <!-- ─── SERVICES ─── -->
 <section id="services">
+  <div class="sticky-heading" data-sticky-for="services">
+    <span class="dot"></span>
+    <span class="sticky-heading-label">Services That Drive Results</span>
+  </div>
   <div class="services-header reveal">
     <div>
       <div class="section-eyebrow">What We Build</div>
@@ -1738,6 +1757,10 @@
 
 <!-- ─── WHY NEXTGEN ─── -->
 <section id="why">
+  <div class="sticky-heading" data-sticky-for="why">
+    <span class="dot"></span>
+    <span class="sticky-heading-label">Why Nextgen Stands Apart</span>
+  </div>
   <div class="why-grid">
     <div class="reveal">
       <div class="section-eyebrow">Our Edge</div>
@@ -1784,6 +1807,10 @@
 
 <!-- ─── PORTFOLIO ─── -->
 <section id="portfolio">
+  <div class="sticky-heading" data-sticky-for="portfolio">
+    <span class="dot"></span>
+    <span class="sticky-heading-label">Projects That Define Industries</span>
+  </div>
   <div class="reveal">
     <div class="section-eyebrow">Our Work</div>
     <h2 class="section-title">Projects That<br><span style="color:var(--gold)">Define Industries</span></h2>
@@ -1834,6 +1861,10 @@
 
 <!-- ─── PROCESS ─── -->
 <section id="process">
+  <div class="sticky-heading" data-sticky-for="process">
+    <span class="dot"></span>
+    <span class="sticky-heading-label">Our Proven Delivery Process</span>
+  </div>
   <div class="reveal" style="text-align:center; max-width:500px; margin:0 auto;">
     <div class="section-eyebrow">How We Work</div>
     <h2 class="section-title">Our Proven<br><span style="color:var(--gold)">Delivery Process</span></h2>
@@ -2154,21 +2185,6 @@ if (!isTouchDevice) {
   });
 }
 
-// ─── LIQUID GLASS CURSOR GLINT ───
-document.querySelectorAll('.glass').forEach(el => {
-  el.addEventListener('mousemove', e => {
-    const r = el.getBoundingClientRect();
-    const mx = ((e.clientX - r.left) / r.width) * 100;
-    const my = ((e.clientY - r.top) / r.height) * 100;
-    el.style.setProperty('--mx', mx + '%');
-    el.style.setProperty('--my', my + '%');
-  });
-  el.addEventListener('mouseleave', () => {
-    el.style.setProperty('--mx', '50%');
-    el.style.setProperty('--my', '0%');
-  });
-});
-
 // ─── SCROLL REVEAL ───
 const reveals = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver(entries => {
@@ -2210,14 +2226,126 @@ const statsObs = new IntersectionObserver(entries => {
 const statsStrip = document.querySelector('.stats-strip');
 if (statsStrip) statsObs.observe(statsStrip);
 
-// ─── SMOOTH SCROLL ───
+// ─── SMOOTH SCROLL + ACTIVE NAV HIGHLIGHTING (combined, race-free) ───
+const navAnchors = Array.from(document.querySelectorAll('.nav-links a, .nav-drawer a'));
+const sectionIds = navAnchors
+  .map(a => a.getAttribute('href'))
+  .filter(href => href && href.startsWith('#'))
+  .map(href => href.slice(1));
+
+const navSections = sectionIds
+  .map(id => document.getElementById(id))
+  .filter(Boolean);
+
+function setActiveNav(id) {
+  navAnchors.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+  });
+}
+
+let scrollLockId = null;
+let scrollLockTimer = null;
+let lastScrollY = window.scrollY;
+
+function releaseScrollLock() {
+  scrollLockId = null;
+  if (scrollLockTimer) { clearTimeout(scrollLockTimer); scrollLockTimer = null; }
+}
+
+// While locked, ignore the observer and keep the clicked link active.
+// The lock releases once the page stops moving (scroll settles) or after a max timeout.
+function armScrollLock(id) {
+  scrollLockId = id;
+  setActiveNav(id);
+  if (scrollLockTimer) clearTimeout(scrollLockTimer);
+  // Safety release in case scroll never "settles" cleanly (e.g. very short distance)
+  scrollLockTimer = setTimeout(releaseScrollLock, 1200);
+}
+
+let settleCheckTimer = null;
+window.addEventListener('scroll', () => {
+  if (scrollLockId === null) return;
+  if (settleCheckTimer) clearTimeout(settleCheckTimer);
+  settleCheckTimer = setTimeout(() => {
+    // no scroll movement for 120ms => smooth-scroll has settled
+    releaseScrollLock();
+  }, 120);
+}, { passive: true });
+
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     e.preventDefault();
-    const target = document.querySelector(a.getAttribute('href'));
-    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const href = a.getAttribute('href');
+    const target = document.querySelector(href);
+    if (target) {
+      if (href.startsWith('#') && navAnchors.includes(a)) {
+        armScrollLock(href.slice(1));
+      }
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   });
 });
+
+if (navSections.length) {
+  const ratios = new Map();
+  navSections.forEach(sec => ratios.set(sec.id, 0));
+
+  const navSpyObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      ratios.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0);
+    });
+    if (scrollLockId !== null) return; // a click is driving the scroll — don't fight it
+    // pick the section with the highest ratio across ALL sections, not just this batch
+    let bestId = null;
+    let bestRatio = 0;
+    ratios.forEach((ratio, id) => {
+      if (ratio > bestRatio) {
+        bestRatio = ratio;
+        bestId = id;
+      }
+    });
+    if (bestId) setActiveNav(bestId);
+  }, { threshold: [0, 0.15, 0.3, 0.5, 0.7, 1], rootMargin: '-90px 0px -40% 0px' });
+
+  navSections.forEach(sec => navSpyObserver.observe(sec));
+}
+
+// ─── STICKY MINI-HEADING VISIBILITY ───
+// Sticky headings use position:sticky so they only ever appear inside their own
+// section. We just toggle a fade based on how far scrolled into that section we are,
+// so it doesn't pop in right at the very top (where the real heading is still visible).
+const stickyHeadings = Array.from(document.querySelectorAll('.sticky-heading'));
+if (stickyHeadings.length) {
+  const NAV_OFFSET = 80; // approx fixed nav height
+
+  function updateStickyHeadings() {
+    stickyHeadings.forEach(bar => {
+      const section = bar.closest('section');
+      if (!section) return;
+      const rect = section.getBoundingClientRect();
+      // Show once the section's top has scrolled past the nav by a bit,
+      // and hide once we're near the very bottom of the section (so it doesn't
+      // hover oddly over the next section's own heading).
+      const scrolledInEnough = rect.top < NAV_OFFSET - 40;
+      const stillWithinSection = rect.bottom > NAV_OFFSET + 60;
+      bar.classList.toggle('visible', scrolledInEnough && stillWithinSection);
+    });
+  }
+
+  let stickyTicking = false;
+  window.addEventListener('scroll', () => {
+    if (!stickyTicking) {
+      stickyTicking = true;
+      requestAnimationFrame(() => {
+        updateStickyHeadings();
+        stickyTicking = false;
+      });
+    }
+  }, { passive: true });
+
+  updateStickyHeadings();
+}
+
 </script>
 </body>
 </html>
