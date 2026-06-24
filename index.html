@@ -1095,7 +1095,7 @@
       font-size: 3.5rem;
       font-weight: 900;
 
-      color: rgba(var(--accent-rgb), 0.12);
+      color: rgba(var(--accent-rgb), 0.28);
 
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -1114,7 +1114,7 @@
     }
 
     .portfolio-item:hover .portfolio-bg {
-      color: rgba(var(--accent-rgb), 0.20);
+      color: rgba(var(--accent-rgb), 0.48);
       transform: translate(-50%, -50%) scale(1.05);
     }
 
@@ -1553,17 +1553,18 @@
       padding: 0 2.5rem;
       white-space: nowrap;
       font-family: 'Rajdhani', sans-serif;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.3em;
-      color: rgba(var(--accent-rgb), 0.45);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      color: var(--gold);
       text-transform: uppercase;
+      transition: color var(--transition-theme);
     }
 
     .ticker-sep {
-      width: 4px;
-      height: 4px;
-      background: rgba(var(--accent-rgb), 0.3);
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
       border-radius: 50%;
       flex-shrink: 0;
     }
@@ -1576,6 +1577,152 @@
       100% {
         transform: translateX(-50%);
       }
+    }
+
+    /* ─── CTA FORM LAYOUT ─── */
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    @media (max-width: 580px) {
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      display: block;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--glass-border);
+      background: rgba(var(--accent-rgb), 0.03);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .form-input::placeholder {
+      color: var(--text-dim);
+      opacity: 0.7;
+    }
+
+    .form-input:focus {
+      border-color: var(--gold);
+      background: rgba(var(--accent-rgb), 0.08);
+      box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.2);
+    }
+
+    select.form-input {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23C9A227'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 1.2rem;
+      padding-right: 2.5rem;
+      cursor: none;
+    }
+
+    select.form-input option {
+      background: var(--black-2);
+      color: var(--text-main);
+    }
+
+    textarea.form-input {
+      resize: vertical;
+    }
+
+    .btn-form-submit {
+      width: 100%;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+      border: none;
+      border-radius: 12px;
+      padding: 1rem;
+      cursor: none;
+      transition: all 0.3s ease;
+      margin-top: 0.75rem;
+    }
+
+    .btn-form-submit:hover {
+      filter: brightness(1.08);
+      box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.4);
+      transform: translateY(-1px);
+    }
+
+    .form-error {
+      color: #ff4a4a;
+      font-size: 0.78rem;
+      margin-bottom: 0.75rem;
+      display: none;
+      font-weight: 500;
+    }
+
+    .success-state {
+      display: none;
+      text-align: center;
+      padding: 2rem 0;
+      animation: fadeInForm 0.5s ease forwards;
+    }
+
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      background: rgba(var(--accent-rgb), 0.1);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: 0 auto 1.5rem;
+      box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.25);
+    }
+
+    .success-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.75rem;
+    }
+
+    .success-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    @keyframes fadeInForm {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* ════════════════════════════════════════
@@ -1890,7 +2037,7 @@
       }
 
       .cta-band-card {
-        padding: 2.5rem 1.5rem;
+        padding: 4rem 1.5rem;
         border-radius: 22px;
       }
 
@@ -2014,7 +2161,7 @@
     <p class="hero-tagline">Beyond Innovation. Building the Future.</p>
     <div class="hero-btns">
       <a href="#services" class="btn-primary">Explore Services</a>
-      <a href="#contact" class="btn-secondary">Start a Project</a>
+      <a href="#contact" class="btn-secondary">Contact Us</a>
     </div>
   </section>
 
@@ -2082,7 +2229,7 @@
         <p>At <strong>Srayudu Nextgen Technologies</strong>, we are more than a technology company — we are architects
           of tomorrow. Founded with the mission to push the boundaries of what's possible, we deliver digital solutions
           that transform businesses and redefine industries.</p>
-        <p>Headquartered in Hyderabad — India's tech capital — we combine <strong>cutting-edge AI</strong>,
+        <p>We combine <strong>cutting-edge AI</strong>,
           enterprise-grade engineering, and creative design thinking to build products that scale, perform, and lead.
         </p>
         <p>Our phoenix emblem stands for what we believe: every great business rises, evolves, and soars. We're here to
@@ -2235,9 +2382,8 @@
           <div class="why-feature glass">
             <div class="why-num">IV</div>
             <div class="why-text">
-              <h4>Hyderabad Talent, Global Standards</h4>
-              <p>Rooted in India's premier tech hub, our engineers hold global certifications and deliver to
-                international quality benchmarks every time.</p>
+              <h4>Elite Talent, Global Standards</h4>
+              <p>Our engineers hold global certifications and deliver to international quality benchmarks every time.</p>
             </div>
           </div>
         </div>
@@ -2394,18 +2540,60 @@
     </div>
   </section>
 
-  <!-- ─── CTA BAND ─── -->
+  <!-- ─── CONTACT SECTION ─── -->
   <section id="contact" class="cta-band">
     <div class="cta-band-card glass reveal">
-      <div class="section-eyebrow">Ready to Rise?</div>
-      <h2 class="cta-band-title">Let's Build the <span class="gold">Future</span><br>Together</h2>
-      <p class="cta-band-sub">Your next breakthrough starts with one conversation</p>
-      <div class="cta-band-line">
-        <span class="cta-band-email">hello@srayudunextgen.com</span>
+      <div id="contactFormWrap">
+        <div class="section-eyebrow" style="margin-bottom:0.4rem;">Get in Touch</div>
+        <h2 class="section-title" style="margin-bottom:0.35rem;">Contact <span class="gold">Us</span></h2>
+        <p class="section-desc" style="margin-bottom:2rem; max-width: 100%; text-align: center;">Tell us about your project or query and we'll get back to you within 24 hours.</p>
+
+        <div class="form-row" style="text-align: left;">
+          <div>
+            <label class="form-label" for="cf-name">Full Name *</label>
+            <input class="form-input" id="cf-name" type="text" placeholder="John Doe" autocomplete="name">
+          </div>
+          <div>
+            <label class="form-label" for="cf-email">Email Address *</label>
+            <input class="form-input" id="cf-email" type="email" placeholder="you@company.com" autocomplete="email">
+          </div>
+        </div>
+
+        <div class="form-row" style="text-align: left;">
+          <div>
+            <label class="form-label" for="cf-phone">Phone Number</label>
+            <input class="form-input" id="cf-phone" type="tel" placeholder="+91 98765 43210" autocomplete="tel">
+          </div>
+          <div>
+            <label class="form-label" for="cf-service">Service Required *</label>
+            <select class="form-input" id="cf-service">
+              <option value="" disabled selected>Select a service...</option>
+              <option value="ai-ml">AI &amp; Machine Learning</option>
+              <option value="web">Web Development</option>
+              <option value="mobile">Mobile Applications</option>
+              <option value="cloud">Cloud Architecture</option>
+              <option value="cybersecurity">Cybersecurity</option>
+              <option value="data">Data &amp; Analytics</option>
+              <option value="other">Other / Multiple Services</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" style="text-align: left; margin-bottom: 1.5rem;">
+          <label class="form-label" for="cf-desc">Description *</label>
+          <textarea class="form-input" id="cf-desc" rows="4" placeholder="Tell us about your project, goals, timeline, and budget..."></textarea>
+        </div>
+
+        <div class="form-error" id="cf-error" style="text-align: left;"></div>
+
+        <button class="btn-form-submit" id="cf-submit" style="margin-top: 0.5rem;">Submit →</button>
       </div>
-      <div class="cta-btns">
-        <a href="mailto:hello@srayudunextgen.com" class="btn-primary">Contact Us Today</a>
-        <a href="#services" class="btn-secondary">View Services</a>
+
+      <div class="success-state" id="cf-success">
+        <div class="success-icon">✓</div>
+        <div class="success-title">Message Sent!</div>
+        <p class="success-desc" style="margin-bottom: 1.5rem;">Thanks for reaching out to us. We will get back to you soon!</p>
+        <button class="btn-form-submit" id="cf-success-close" style="max-width: 180px; margin: 0 auto; display: block; padding: 0.75rem 1.5rem;">Close</button>
       </div>
     </div>
   </section>
@@ -2422,7 +2610,7 @@
               <span>Technologies Private Limited</span>
             </div>
           </div>
-          <p class="footer-brand-desc">Hyderabad's next-generation technology company crafting AI solutions, web
+          <p class="footer-brand-desc">A next-generation technology company crafting AI solutions, web
             platforms, and digital experiences that define tomorrow.</p>
           <p class="footer-tagline">Beyond Innovation. Building the Future.</p>
         </div>
@@ -2467,6 +2655,8 @@
       </div>
     </div>
   </footer>
+
+
 
   <script>
     // ─── AURA PARTICLE CANVAS ───
@@ -2763,6 +2953,101 @@ if (navSections.length) {
 
   navSections.forEach(sec => navSpyObserver.observe(sec));
 }
+
+// ─── ON-PAGE CONTACT FORM LOGIC ───
+const contactSection = document.getElementById('contact');
+const contactFormWrap = document.getElementById('contactFormWrap');
+const cfSuccess = document.getElementById('cf-success');
+const cfSubmitBtn = document.getElementById('cf-submit');
+const cfError = document.getElementById('cf-error');
+
+// Form inputs
+const cfName = document.getElementById('cf-name');
+const cfEmail = document.getElementById('cf-email');
+const cfPhone = document.getElementById('cf-phone');
+const cfService = document.getElementById('cf-service');
+const cfDesc = document.getElementById('cf-desc');
+
+// Select all triggers (Get a Quote, Start a Project, Contact links)
+const contactTriggers = document.querySelectorAll('.contact-trigger, .nav-cta, a[href="#contact"], a[href="mailto:hello@srayudunextgen.com"]');
+
+// Bind triggers to scroll smoothly to contact form
+contactTriggers.forEach(trigger => {
+  trigger.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// Custom cursor hover size changes for form fields
+if (typeof cursor !== 'undefined' && cursor) {
+  const formInteractive = contactSection.querySelectorAll('input, select, textarea, button');
+  formInteractive.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '20px';
+      cursor.style.height = '20px';
+      if (typeof ring !== 'undefined' && ring) {
+        ring.style.borderColor = 'rgba(var(--accent-rgb),0.8)';
+      }
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '12px';
+      cursor.style.height = '12px';
+      if (typeof ring !== 'undefined' && ring) {
+        ring.style.borderColor = 'rgba(var(--accent-rgb),0.5)';
+      }
+    });
+  });
+}
+
+// Form Submission
+cfSubmitBtn.addEventListener('click', () => {
+  const nameVal = cfName.value.trim();
+  const emailVal = cfEmail.value.trim();
+  const serviceVal = cfService.value;
+  const descVal = cfDesc.value.trim();
+  
+  if (!nameVal || !emailVal || !serviceVal || !descVal) {
+    cfError.textContent = 'Please fill in all required fields (*).';
+    cfError.style.display = 'block';
+    return;
+  }
+  
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(emailVal)) {
+    cfError.textContent = 'Please enter a valid email address.';
+    cfError.style.display = 'block';
+    return;
+  }
+  
+  cfError.style.display = 'none';
+  
+  // Simulate sending
+  cfSubmitBtn.disabled = true;
+  cfSubmitBtn.textContent = 'Sending...';
+  
+  setTimeout(() => {
+    cfSubmitBtn.disabled = false;
+    cfSubmitBtn.textContent = 'Submit →';
+    
+    contactFormWrap.style.display = 'none';
+    cfSuccess.style.display = 'block';
+  }, 1200);
+});
+
+// Reset and show form when Close button is clicked
+const cfSuccessClose = document.getElementById('cf-success-close');
+cfSuccessClose.addEventListener('click', () => {
+  contactFormWrap.style.display = 'block';
+  cfSuccess.style.display = 'none';
+  cfName.value = '';
+  cfEmail.value = '';
+  cfPhone.value = '';
+  cfService.value = '';
+  cfDesc.value = '';
+});
 
 
 
